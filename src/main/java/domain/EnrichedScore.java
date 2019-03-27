@@ -21,28 +21,28 @@ import javax.persistence.Temporal;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "EnrichedRating.findAll", query = "SELECT e FROM EnrichedRating e")
+    @NamedQuery(name = "EnrichedScore.findAll", query = "SELECT e FROM EnrichedScore e")
 })
-public class EnrichedRating implements Serializable{
+public class EnrichedScore implements Serializable{
 
     @OneToOne
     @Id
     private QueryResult queryResult;
 
-    private int userRating;
+    private int userScore;
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date date;
 
-    public EnrichedRating() {
+    public EnrichedScore() {
     }
 
-    public int getUserRating() {
-        return userRating;
+    public int getUserScore() {
+        return userScore;
     }
 
-    public void setUserRating(int userRating) {
-        this.userRating = userRating;
+    public void setUserRating(int userScore) {
+        this.userScore = userScore;
     }
 
     public QueryResult getQueryResult() {

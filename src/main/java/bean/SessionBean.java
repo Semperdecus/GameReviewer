@@ -5,7 +5,7 @@
  */
 package bean;
 
-import domain.EnrichedRating;
+import domain.EnrichedScore;
 import domain.LookupResult;
 import domain.QueryResult;
 import java.io.Serializable;
@@ -44,23 +44,11 @@ public class SessionBean implements Serializable {
     @Inject
     ScoreService scoreService;
 
-    private int lastScore;
-
     public SessionBean() {
 
     }
 
-    public int getLastScore() {
-        return lastScore;
-    }
-
-    public void setLastScore(int lastScore) {
-        this.lastScore = lastScore;
-    }
-
     public void btnPressed() {
-
-        this.setLastScore(0);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         String in = ec.getRequestParameterMap().get("inputForm:in");
 
@@ -81,7 +69,7 @@ public class SessionBean implements Serializable {
         int totalReviewers = 0;
 
         for (LookupResult cr : qr.getLookupResults()) {
-            if (cr.getScore() != -1) {
+            if (cr.getScore() != 0) {
                 totalRating = totalRating + cr.getScore();
                 totalReviewers += 1;
             }
@@ -92,7 +80,7 @@ public class SessionBean implements Serializable {
         return String.valueOf(calculatedRating).substring(0, 3) + " by " + totalReviewers + " reviewers";
     }
 
-    public List<EnrichedRating> getRatingHistory() {
+    public List<EnrichedScore> getRatingHistory() {
         return scoreService.getHistory();
     }
 

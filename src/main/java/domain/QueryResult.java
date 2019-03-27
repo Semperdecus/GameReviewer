@@ -6,6 +6,7 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,7 +28,7 @@ public class QueryResult implements Serializable {
     private List<LookupResult> lookupResult;
 
     public QueryResult() {
-        this.lookupResult = lookupResult;
+        this.lookupResult = new ArrayList<>();
     }
 
     public String getQuery() {

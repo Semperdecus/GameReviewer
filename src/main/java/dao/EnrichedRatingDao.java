@@ -5,7 +5,7 @@
  */
 package dao;
 
-import domain.EnrichedRating;
+import domain.EnrichedScore;
 import domain.LookupResult;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -22,15 +22,15 @@ public class EnrichedRatingDao {
     @PersistenceContext(unitName="GameReviewerClientPU")
     private EntityManager em;
     
-    public List<EnrichedRating> findAll(){
+    public List<EnrichedScore> findAll(){
         return em.createNamedQuery("EnrichedRating.findAll").getResultList();
     }
     
-    public EnrichedRating find(String query){
-        return em.find(EnrichedRating.class, query);
+    public EnrichedScore find(String query){
+        return em.find(EnrichedScore.class, query);
     }
     
-    public void add(EnrichedRating er){
+    public void add(EnrichedScore er){
         for (LookupResult lr : er.getQueryResult().getLookupResults()) {
             em.persist(lr);
         }
@@ -39,11 +39,11 @@ public class EnrichedRatingDao {
         em.persist(er);
     }
     
-    public void edit(EnrichedRating er){
+    public void edit(EnrichedScore er){
         em.merge(er);
     }
     
-    public void remove(EnrichedRating er){
+    public void remove(EnrichedScore er){
         em.remove(er);
 }
 }

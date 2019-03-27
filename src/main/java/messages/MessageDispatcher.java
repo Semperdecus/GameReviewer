@@ -39,7 +39,7 @@ public class MessageDispatcher {
                 try (JMSContext context = connectionFactory.createContext()) {
                     JMSProducer producer = context.createProducer();
                     producer.send(t, messageBody);
-                    System.out.println("Client- Message dispatched ");
+                    System.out.println(">>> Client- Message dispatched ");
                 }
                 // JMScontext auto closes
             }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import org.primefaces.context.RequestContext;
 
 /**
  * used to update page when MDB is called

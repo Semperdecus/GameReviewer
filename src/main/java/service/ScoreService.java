@@ -6,7 +6,7 @@
 package service;
 
 import dao.EnrichedRatingDao;
-import domain.EnrichedRating;
+import domain.EnrichedScore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -24,17 +24,17 @@ public class ScoreService implements Serializable {
     @Inject
     private EnrichedRatingDao dao;
 
-    public void addRating(EnrichedRating er) {
+    public void addRating(EnrichedScore er) {
         er.setDate(new Date());
         dao.add(er);
     }
 
-    public void editRating(EnrichedRating er) {
+    public void editRating(EnrichedScore er) {
         er.setDate(new Date());
         dao.edit(er);
     }
 
-    public List<EnrichedRating> getHistory() {
+    public List<EnrichedScore> getHistory() {
         return dao.findAll();
     }
 }

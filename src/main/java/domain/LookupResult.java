@@ -25,8 +25,17 @@ public class LookupResult implements Serializable {
 
     private double score;
     private String link;
+    private String source;
 
     public LookupResult() {
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public double getScore() {
@@ -48,9 +57,11 @@ public class LookupResult implements Serializable {
     public LookupResult(JsonObject j) {
 
         try {
+            this.source = j.getString("source");
             this.score = j.getJsonNumber("score").doubleValue();
             this.link = j.getString("link");
         } catch (ClassCastException cce) {
+            this.source = null;
             this.score = -1;
             this.link = null;
             System.out.println(cce.getMessage());
