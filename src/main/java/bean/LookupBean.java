@@ -21,7 +21,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Selector;
 
 /**
- * gather data from IGN
+ * gather data from IGN (service activator)
  *
  * @author teren
  */
@@ -56,7 +56,7 @@ public class LookupBean {
             messageBody = factory.getMessageBody(score);
         }
 
-        System.out.println(messageBody);
+        System.out.println("IGN: " + messageBody);
         // Dispatch the message
         dispatcher.dispatchMessage(messageBody);
     }

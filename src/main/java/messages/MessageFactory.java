@@ -39,7 +39,7 @@ public class MessageFactory implements Serializable {
 
     public String notFoundMessageBody() {
         JsonObject j = Json.createObjectBuilder()
-                .add("score", "Not found")
+                .add("score", 0)
                 .add("link", "Not found")
                 .add("source", "IGN")
                 .build();
