@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Game Reviewer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="inputForm">
+            <p:growl id="growl" showDetail="true" sticky="false" />  
+
+            <p:outputLabel value="Please specify your search query:"/>
+
+            <h:inputText id="in"/>
+
+            <p:commandButton value="Go!" action="#{sessionBean.btnPressed()}" update="inputForm:tabel"/>
+
+            <p:dataScroller var="res" value="#{sessionBean.results}" id="tabel" chunkSize="10">
+                <p:outputPanel>
+                    <h:outputText value=" Query: " /> <i><u><h:outputText value="#{res.query}" /></u></i>
+
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputText value="Website:" />
+                        <h:outputText value="#{res.getLookupResult(0).link}" />
+
+                        <h:outputText value="Score" />
+                        <h:outputText value="#{res.getLookupResult(0).score}" style="font-weight: bold"/>
+
+                        <h:outputText value="Website:" />
+                        <h:outputText value="#{res.getLookupResult(1).link}" />
+
+                        <h:outputText value="Score" />
+                        <h:outputText value="#{res.getLookupResult(1).score}" style="font-weight: bold"/>
+
+                        <h:outputText value="Website:" />
+                        <h:outputText value="#{res.getLookupResult(2).link}" />
+
+                        <h:outputText value="Score" />
+                        <h:outputText value="#{res.getLookupResult(2).score}" style="font-weight: bold"/>
+
+                    </h:panelGrid>
+                    <p:separator />
+
+                    <h:outputText value="Calculated average: #{sessionBean.calculateAverage(res)}" />
+                    <p:separator />
+                    <br />
+                    <p:separator />
+                </p:outputPanel>
+            </p:dataScroller>
+
+            <p:poll interval="1"  update="inputForm:tabel" />
+        </h:form>
+    </h:body>
+</html>
