@@ -38,24 +38,19 @@ public class MessageTest {
         Score s = new Score(8.5, "link.com");
         String result = messageFactory.getMessageBody(s);
 
-        assertEquals("{\"score\":8.5,\"link\":\"link.com\",\"source\":\"IGN\"}", result);
+        assertEquals("{\"score\":8.5,\"link\":\"link.com\",\"source\":\"MetaCritics\"}", result);
     }
 
     @Test
     public void testLookupName() throws IOException {
         String query = "Super mario 64";
-        String finalUrl = "https://www.ign.com/games/";
+        String baseUrl = "http://www.metacritic.com/search/game/";
         String name = null;
 
-        for (String word : query.toLowerCase().split(" ")) {
-            finalUrl = finalUrl + word + "-";
-        }
-
-        finalUrl = finalUrl.substring(0, finalUrl.length() - 1);
-
+        String finalUrl = baseUrl + query + "/results";
         System.out.println(finalUrl);
-        Document doc;
 
+        Document doc;
         try {
             doc = Jsoup.connect(finalUrl)
                     .data("query", "Java")
@@ -64,14 +59,14 @@ public class MessageTest {
                     .timeout(3000)
                     .get();
 
-            Element nameHTML = doc.select("h1[class=jsx-2881975397]").first();
+            Element firstSearchResult = doc.select("h3[class=product_title basic_stat]").first();
 
-            System.out.println("NAME: " + nameHTML);
+            name = firstSearchResult.select("a").first().text();
 
-            name = nameHTML.html();
-            System.out.println("FULLNAME: " + name);
-        } catch (java.lang.StringIndexOutOfBoundsException | NullPointerException exc) {
-            System.out.println(exc.getMessage());
+            System.out.println("Name: " + name);
+
+        } catch (java.lang.StringIndexOutOfBoundsException | NullPointerException | IOException exc) {
+            System.out.println(exc);
         }
 
         assertEquals("Super Mario 64", name);
@@ -79,26 +74,37 @@ public class MessageTest {
 
     @Test
     public void testLookupScore() throws IOException {
-        Score score = null;
-        String pageUrl = "https://www.ign.com/games/super-mario-64";
+        String query = "Super mario 64";
+        String baseUrl = "http://www.metacritic.com/search/game/";
+        String link = null;
+        Double score = null;
 
+        String finalUrl = baseUrl + query + "/results";
+        System.out.println(finalUrl);
+
+        Document doc;
         try {
-            Document doc = Jsoup.connect(pageUrl).get();
+            doc = Jsoup.connect(finalUrl)
+                    .data("query", "Java")
+                    .userAgent("Mozilla")
+                    .cookie("auth", "token")
+                    .timeout(3000)
+                    .get();
 
-            Element scoreValue = doc.select("span[class=jsx-3796817351 hexagon-content]").first();
-            String link = doc.select("a.jsx-2881975397").first().attr("abs:href");
-            System.out.println("LINK: " + link);
-            
-            String scoreHTML = scoreValue.html();
-            Double scoreDouble = Double.parseDouble(scoreHTML);
-            System.out.println("SCORE: " + scoreDouble);
+            Element firstSearchResult = doc.select("div[class=main_stats]").first();
 
-            score = new Score(scoreDouble, link);
-        } catch (java.lang.StringIndexOutOfBoundsException | NullPointerException exc) {
-            System.out.println(exc.getMessage());
+            link = firstSearchResult.select("a").first().attr("abs:href");
+            String scoreText = firstSearchResult.select("span").first().text();
+            score = Double.parseDouble(scoreText) / 10;
+
+            System.out.println("Link: " + link);
+            System.out.println("Score: " + score);
+
+        } catch (java.lang.StringIndexOutOfBoundsException | NullPointerException | IOException exc) {
+            System.out.println(exc);
         }
-        
-        assertEquals("https://www.ign.com/articles/1996/09/26/super-mario-64", score.getLink());
-        assertEquals(9.8, score.getScore(), 1);
+
+        assertEquals("https://www.metacritic.com/game/nintendo-64/super-mario-64", link);
+        assertEquals(9.4, score, 1);
     }
 }

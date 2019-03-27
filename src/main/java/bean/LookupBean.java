@@ -41,79 +41,47 @@ public class LookupBean {
     }
 
     public void search(String query) throws IOException {
-        String id = getId(query);
-        String name = getName(id);
-        Score score = getScore(id);
-
-        System.out.println("NAME: " + name);
-        System.out.println("SCORE: " + score);
-
+        Score score = getScore(query);
+        System.out.println(score);
         String messageBody;
-
+        
         if (score == null) {
             messageBody = factory.notFoundMessageBody();
         } else {
             messageBody = factory.getMessageBody(score);
         }
 
-        System.out.println(messageBody);
+        System.out.println("METACRITIC: " + messageBody);
         // Dispatch the message
         dispatcher.dispatchMessage(messageBody);
     }
 
-    public String getId(String query) {
-        String result = "";
+    public Score getScore(String query) {
+        Score score = null;
+        String baseUrl = "http://www.metacritic.com/search/game/";
+        String link = null;
 
-        for (String word : query.toLowerCase().split(" ")) {
-            result = result + word + "-";
-        }
-
-        result = result.substring(0, result.length() - 1);
-
-        return result;
-    }
-
-    public String getName(String id) throws IOException {
-        String finalUrl = URL + "games/" + id;
-        String name = null;
-
-        System.out.println(finalUrl);
+        String finalUrl = baseUrl + query + "/results";
 
         Document doc;
-
         try {
-            doc = Jsoup.connect(finalUrl).get();
-            Element firstSearchResult = doc.select("td[class=primary_photo]").first();
+            doc = Jsoup.connect(finalUrl)
+                    .data("query", "Java")
+                    .userAgent("Mozilla")
+                    .cookie("auth", "token")
+                    .timeout(3000)
+                    .get();
 
-            String fullHTML = firstSearchResult.html();
+            Element firstSearchResult = doc.select("div[class=main_stats]").first();
 
-            // It will throw java.lang.StringIndexOutOfBoundsException if not a movie or series
-            id = fullHTML.substring(fullHTML.indexOf("tt"), fullHTML.indexOf("/?ref_"));
-        } catch (java.lang.StringIndexOutOfBoundsException | NullPointerException | IOException exc) {
-            Logger.getLogger(LookupBean.class.getName()).log(Level.SEVERE, null, "Exception in Metacritics Lookup.");
-        }
-
-        return name;
-    }
-
-    public Score getScore(String id) {
-        Score score = null;
-
-        String pageUrl = URL + "games/" + id;
-
-        try {
-            Document doc = Jsoup.connect(pageUrl).get();
-
-            Element scoreValue = doc.select("span[class=jsx-3796817351 hexagon-content]").first();
-            String link = doc.select("a.jsx-2881975397").first().attr("abs:href");
-
-            String scoreHTML = scoreValue.html();
-            Double scoreDouble = Double.parseDouble(scoreHTML);
+            link = firstSearchResult.select("a").first().attr("abs:href");
+            String scoreText = firstSearchResult.select("span").first().text();
+            Double scoreDouble = Double.parseDouble(scoreText) / 10;
 
             score = new Score(scoreDouble, link);
 
-        } catch (IOException | NumberFormatException | Selector.SelectorParseException ex) {
-            Logger.getLogger(LookupBean.class.getName()).log(Level.SEVERE, null, "Exception in IGN Lookup.");
+        } catch (java.lang.StringIndexOutOfBoundsException | NullPointerException | IOException exc) {
+            System.out.println(exc);
         }
 
         return score;
