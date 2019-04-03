@@ -6,6 +6,8 @@
 package messages;
 
 import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
@@ -24,6 +26,8 @@ import javax.json.JsonReader;
 @Singleton
 public class MessageDispatcher {
 
+    private Session session;
+    
     @EJB
     private MessageDispatcher instance;
 
@@ -34,7 +38,9 @@ public class MessageDispatcher {
     @Resource(lookup = "jms/gameReviewerRequest")
     private Topic t;
 
-    
+    @Resource(lookup = "jms/gameReviewerReply")
+    private Queue repQ;
+
     public MessageDispatcher() {
     }
 
@@ -43,9 +49,16 @@ public class MessageDispatcher {
             @Override
             public void run() {
                 try (JMSContext context = connectionFactory.createContext()) {
+                    TextMessage requestMessage = context.createTextMessage();
+                    requestMessage.setText(messageBody);
+                    requestMessage.setJMSReplyTo(repQ);
+                    
                     JMSProducer producer = context.createProducer();
-                    producer.send(t, messageBody);
-                    System.out.println(">>> Client- Message dispatched with ID: ");
+                    producer.send(t, requestMessage);
+
+                    System.out.println(">>> Client- Message dispatched");
+                } catch (JMSException ex) {
+                    Logger.getLogger(MessageDispatcher.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 // JMScontext auto closes
             }

@@ -43,16 +43,14 @@ public class ClientMDB implements MessageListener {
 
     @Override
     public void onMessage(Message message) {
-        System.out.println("<<< RECEIVED CLIENT SIDE MESSAGE:");
+        System.out.println("<<< RECEIVED CLIENT SIDE MESSAGE");
+
         try {
             TextMessage t = (TextMessage) message;
-
-            System.out.println(t.getText());
 
             JsonObject ob = factory.fromString(t.getText());
 
             resultService.addResult(new LookupResult(ob));
-
         } catch (JMSException ex) {
             Logger.getLogger(ClientMDB.class.getName()).log(Level.SEVERE, null, ex);
         }

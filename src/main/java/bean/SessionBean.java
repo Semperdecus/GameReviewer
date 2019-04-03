@@ -11,11 +11,14 @@ import domain.QueryResult;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.ManagedBean;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import messages.MessageDispatcher;
 import messages.MessageFactory;
 import service.ScoreService;
@@ -28,7 +31,7 @@ import org.primefaces.event.RateEvent;
  * @author teren
  */
 @SessionScoped
-@Named
+@Named("sessionBean")
 @ManagedBean
 public class SessionBean implements Serializable {
 
@@ -52,6 +55,10 @@ public class SessionBean implements Serializable {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         String in = ec.getRequestParameterMap().get("inputForm:in");
 
+        HttpSession session = (HttpSession) ec.getSession(false);
+        String sessionId = session.getId();
+        System.out.println("SESSIONID = " + sessionId);
+        
         QueryResult qr = new QueryResult();
         qr.setQuery(in);
         resultService.getResults().add(0, qr);
