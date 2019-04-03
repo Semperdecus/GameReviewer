@@ -1,0 +1,5 @@
+bean\LookupBean.class
+domain\Score.class
+messages\MessageDispatcher.class
+messages\MessageDispatcher$1.class
+messages\MessageFactory.class

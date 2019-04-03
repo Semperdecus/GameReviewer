@@ -1,0 +1,14 @@
+bean\ClientMDB.class
+dao\EnrichedScoreDao.class
+bean\SessionBean.class
+domain\QueryResult_.class
+service\ScoreService.class
+messages\MessageDispatcher.class
+messages\MessageDispatcher$1.class
+domain\LookupResult.class
+domain\LookupResult_.class
+domain\QueryResult.class
+service\ResultService.class
+messages\MessageFactory.class
+domain\EnrichedScore.class
+domain\EnrichedScore_.class
