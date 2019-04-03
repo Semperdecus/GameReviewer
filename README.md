@@ -19,6 +19,6 @@ Goals:
 Demo:
 The entire system is build using a local payara infrastructure. 
 To run this application you will have to setup your own infrastructure for web-hosting and JMS messaging. 
-More information in see the [project document](/Document.docx).
+More information can be found in the [project document](/Document.docx).
 
 A short demo video can be found on [youtube](https://www.youtube.com/watch?v=uhkr03vw8hQ)
