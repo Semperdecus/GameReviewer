@@ -1,6 +1,3 @@
-# GameReviewer
-DPI6
-
 GameReviewer
 ======
 Software that crawls through IGN and MetaCritics to find reviews of your favorite game.
