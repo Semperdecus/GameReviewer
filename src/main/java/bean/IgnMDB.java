@@ -11,13 +11,15 @@ import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import messages.MessageDispatcher;
 import messages.MessageFactory;
 
 /**
- * 
+ * Listen to requests from request topic (service activator)
  * @author teren
  */
 @MessageDriven(activationConfig = {
@@ -37,16 +39,19 @@ public class IgnMDB implements MessageListener {
     @Inject
     MessageFactory factory;
 
+    @Inject
+    MessageDispatcher dispatcher;
+
     @Override
     public void onMessage(Message msg) {
-
         TextMessage t = (TextMessage) msg;
-
+        
         String q = factory.getQueryFromRequestMessageBody(t);
         System.out.println("<<< IGN - Received Query: " + q);
 
         try {
-            lookup.search(q);
+            String messageBody = lookup.search(q);
+            dispatcher.dispatchMessage(messageBody, t);
         } catch (IOException ex) {
             Logger.getLogger(IgnMDB.class.getName()).log(Level.SEVERE, null, ex);
         }

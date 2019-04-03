@@ -21,7 +21,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Selector;
 
 /**
- * gather data from IGN (service activator)
+ * gather data from IGN session bean
  *
  * @author teren
  */
@@ -32,21 +32,14 @@ public class LookupBean {
     @Inject
     MessageFactory factory;
 
-    @Inject
-    MessageDispatcher dispatcher;
-
     private static final String URL = "https://www.ign.com/";
 
     public LookupBean() {
     }
 
-    public void search(String query) throws IOException {
+    public String search(String query) throws IOException {
         String id = getId(query);
-        String name = getName(id);
         Score score = getScore(id);
-
-        System.out.println("NAME: " + name);
-        System.out.println("SCORE: " + score);
 
         String messageBody;
 
@@ -56,9 +49,8 @@ public class LookupBean {
             messageBody = factory.getMessageBody(score);
         }
 
-        System.out.println("IGN: " + messageBody);
-        // Dispatch the message
-        dispatcher.dispatchMessage(messageBody);
+        // Return name + score + source
+        return messageBody;
     }
 
     public String getId(String query) {
@@ -76,8 +68,6 @@ public class LookupBean {
     public String getName(String id) throws IOException {
         String finalUrl = URL + "games/" + id;
         String name = null;
-
-        System.out.println(finalUrl);
 
         Document doc;
 

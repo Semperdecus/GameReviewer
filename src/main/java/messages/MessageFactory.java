@@ -47,17 +47,18 @@ public class MessageFactory implements Serializable {
         return j.toString();
     }
 
-    // debugging
     public String getQueryFromRequestMessageBody(TextMessage m) {
         String s = null;
         try {
+            System.out.println("MESSAGE TO GET QUEUE FORM: " + m.getText());
             JsonReader jsonReader;
             jsonReader = Json.createReader(new StringReader(m.getText()));
             JsonObject j = jsonReader.readObject();
             s = j.getString("query");
             jsonReader.close();
+            System.out.println("QUERY: " + s);
         } catch (JMSException ex) {
-            Logger.getLogger(MessageFactory.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("ERROR");
         }
         return s;
     }
