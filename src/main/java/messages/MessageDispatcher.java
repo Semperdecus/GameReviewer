@@ -5,12 +5,17 @@
  */
 package messages;
 
+import java.io.StringReader;
 import javax.annotation.Resource;
 import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.jms.*;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 /**
  *
@@ -29,6 +34,7 @@ public class MessageDispatcher {
     @Resource(lookup = "jms/gameReviewerRequest")
     private Topic t;
 
+    
     public MessageDispatcher() {
     }
 
@@ -39,7 +45,7 @@ public class MessageDispatcher {
                 try (JMSContext context = connectionFactory.createContext()) {
                     JMSProducer producer = context.createProducer();
                     producer.send(t, messageBody);
-                    System.out.println(">>> Client- Message dispatched ");
+                    System.out.println(">>> Client- Message dispatched with ID: ");
                 }
                 // JMScontext auto closes
             }
@@ -51,5 +57,4 @@ public class MessageDispatcher {
     public void postToJMS(Runnable r) {
         r.run();
     }
-
 }

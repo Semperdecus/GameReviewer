@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
- * class for merging lookup rating and results
+ * class for persisting query results
  *
  * @author teren
  */
@@ -29,7 +29,7 @@ public class EnrichedScore implements Serializable{
     @Id
     private QueryResult queryResult;
 
-    private int userScore;
+    private int score;
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date date;
@@ -38,11 +38,11 @@ public class EnrichedScore implements Serializable{
     }
 
     public int getUserScore() {
-        return userScore;
+        return score;
     }
 
     public void setUserRating(int userScore) {
-        this.userScore = userScore;
+        this.score = userScore;
     }
 
     public QueryResult getQueryResult() {

@@ -5,7 +5,7 @@
  */
 package service;
 
-import dao.EnrichedRatingDao;
+import dao.EnrichedScoreDao;
 import domain.EnrichedScore;
 import java.io.Serializable;
 import java.util.Date;
@@ -22,7 +22,7 @@ import javax.inject.Inject;
 public class ScoreService implements Serializable {
 
     @Inject
-    private EnrichedRatingDao dao;
+    private EnrichedScoreDao dao;
 
     public void addRating(EnrichedScore er) {
         er.setDate(new Date());

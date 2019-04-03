@@ -21,8 +21,7 @@ import messages.MessageFactory;
 import service.ResultService;
 
 /**
- * bean to listen to JMS messages (message driven bean) 
- * configured solely in Payara (no ActiveMQ)
+ * bean to listen to JMS replies
  * 
  * @author teren
  */
@@ -34,7 +33,7 @@ import service.ResultService;
 public class ClientMDB implements MessageListener {
 
     @Inject
-    ResultService dispatcher;
+    ResultService resultService;
 
     @Inject
     MessageFactory factory;
@@ -52,11 +51,10 @@ public class ClientMDB implements MessageListener {
 
             JsonObject ob = factory.fromString(t.getText());
 
-            dispatcher.addResult(new LookupResult(ob));
+            resultService.addResult(new LookupResult(ob));
 
         } catch (JMSException ex) {
             Logger.getLogger(ClientMDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }

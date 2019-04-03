@@ -13,11 +13,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * Persist enriched (formatted) rating so future query lookups don't have to data mine the websites
+ * Persist enriched scores
  * @author teren
  */
 @Stateless
-public class EnrichedRatingDao {
+public class EnrichedScoreDao {
 
     @PersistenceContext(unitName="GameReviewerClientPU")
     private EntityManager em;
