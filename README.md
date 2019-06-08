@@ -18,9 +18,7 @@ The main goal of this course is to become more familiar with different design pa
 - Able to give advice for multiple messaging software for communication in distributed applications.
 - Able to write functional, reliable and scalable software for asynchronous messaging.
 
-### Setup
-The entire system is build using a local payara infrastructure. 
-To run this application you will have to setup your own infrastructure for web-hosting and JMS messaging. 
-More information can be found in the [project document](/Document.docx).
+
+*More information can be found in the [project document](/Document.docx).*
 
 ![architecture](https://github.com/Semperdecus/GameReviewer/blob/master/architectuur.png)
