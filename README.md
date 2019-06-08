@@ -1,5 +1,5 @@
 # GameReviewer
-Software that crawls through IGN and MetaCritics to find reviews of your favorite game.
+Software that crawls through different sources to find reviews of your favorite game.
 
 *Demo:* [youtube](https://www.youtube.com/watch?v=uhkr03vw8hQ)
 
