@@ -4,7 +4,7 @@ Software that crawls through IGN and MetaCritics to find reviews of your favorit
 This project is made for an assignment of the course DPI6 offered by Fontys University of Applied Science.
 The main goal of this course is to become more familiar with different design patterns.
 
-*Demo: * [youtube](https://www.youtube.com/watch?v=uhkr03vw8hQ)
+*Demo:* [youtube](https://www.youtube.com/watch?v=uhkr03vw8hQ)
 
 ## Used technologies
 - Multiple [enterprise design patterns](https://www.enterpriseintegrationpatterns.com/)
